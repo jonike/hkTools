@@ -1,11 +1,10 @@
-# cycleThruVisCamBackward.py
-#
-# Author : HYUK KO / kohyuk91@gmail.com
+# Author : HYUK KO | kohyuk91@gmail.com | github.com/kohyuk91
 
 
 import maya.cmds as mc
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
+
 
 def main(mode):
     selVisCamShapeList = mc.ls(cameras=True, visible=True, long=True)
