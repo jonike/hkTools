@@ -1,0 +1,9 @@
+
+global proc hko_mm_hotkeys_install() {
+    string $whatIs = `whatIs hko_mm_hotkeys_install`;
+    string $path = `substring $whatIs 25 999`;
+    string $filename = `substitute "install.mel" $path "install.py"`;;
+    python("import imp;imp.load_source('_hko_mm_hotkeys_install', '"+$filename+"')");
+}
+
+hko_mm_hotkeys_install();
