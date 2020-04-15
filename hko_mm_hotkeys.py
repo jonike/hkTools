@@ -43,18 +43,19 @@ def getScriptsDir():
 
 def main():
     scriptNamePathLangs = getScriptNamePathLang()
+    updatedMsg = "\nUpdated...\n\n"
+    createdMsg = "\nCreated...\n\n"
     for scriptNamePathLang in scriptNamePathLangs:
         name, path, commandLanguage = scriptNamePathLang
         if cmds.runTimeCommand(name, q=True, exists=True):
-            continue
+            cmds.runTimeCommand(name, e=True, delete=True)
+            cmds.runTimeCommand(name, category="Custom Scripts", commandLanguage=commandLanguage, command=getCommand(path))
+            updatedMsg += "'{}' runtime command\n".format(name)
+        else:
+            cmds.runTimeCommand(name, category="Custom Scripts", commandLanguage=commandLanguage, command=getCommand(path))
+            createdMsg += "'{}' runtime command.\n".format(name)
 
-        cmds.runTimeCommand(
-                            name,
-                            category="Custom Scripts",
-                            commandLanguage=commandLanguage,
-                            command=getCommand(path)
-                            )
-        print "Created '{}' runtime command.".format(name)
+    cmds.confirmDialog(title="Results",message="{0}\n-----------------------\n{1}".format(updatedMsg, createdMsg))
 
 
 if isMaya:

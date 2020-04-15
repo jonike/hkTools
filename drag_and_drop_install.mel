@@ -3,7 +3,7 @@ global proc drag_and_drop_install() {
     string $whatIs = `whatIs drag_and_drop_install`;
     string $path = `substring $whatIs 25 999`;
     string $filename = `substitute "drag_and_drop_install.mel" $path "hko_mm_hotkeys.py"`;;
-    python("import imp;imp.load_source('hko_mm_hotkeys', '"+$filename+"')");
+    python("import imp;imp.load_source('_drag_and_drop_install', '"+$filename+"')");
 }
 
 drag_and_drop_install();
