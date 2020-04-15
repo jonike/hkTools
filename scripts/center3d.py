@@ -46,6 +46,7 @@ center3d.main()
 """
 
 # Versions
+# 0.1.1 - Added 'if __name__ == "__main__":' statement.
 # 0.1.0 - Initial Release (2020.04.11)
 # 0.0.1 - Project start (2018)
 
@@ -53,7 +54,6 @@ center3d.main()
 import maya.cmds as mc
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
-import sys
 
 
 def getActive3dViewCam():
@@ -203,6 +203,7 @@ def main():
         return
 
     center3d()
+
 
 if __name__ == "__main__":
     main()

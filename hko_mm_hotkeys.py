@@ -12,7 +12,8 @@ def onMayaDroppedPythonFile(*args, **kwargs):
 
 
 def _onMayaDropped():
-    main()
+    if isMaya:
+        main()
 
 
 def getScriptNamePathLang():
@@ -56,7 +57,3 @@ def main():
             createdMsg += "'{}' runtime command.\n".format(name)
 
     cmds.confirmDialog(title="Results",message="{0}\n-----------------------\n{1}".format(updatedMsg, createdMsg))
-
-
-if isMaya:
-    _onMayaDropped()
