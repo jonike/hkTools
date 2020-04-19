@@ -5,9 +5,9 @@ global proc drag_and_drop_install() {
     string $sourceLocation = `substitute "drag_and_drop_install.mel" $path ""`;
     python("import sys");
     python("sys.path.append('" + $sourceLocation + "')");
-    python("import hko_mm_hotkeys");
-    python("reload(hko_mm_hotkeys)");
-    python("hko_mm_hotkeys._onMayaDropped()");
+    python("import mayaMatchmoveTools");
+    python("reload(mayaMatchmoveTools)");
+    python("mayaMatchmoveTools._onMayaDropped()");
 }
 
 drag_and_drop_install();

@@ -1,3 +1,5 @@
+# Author : HYUK KO | kohyuk91@gmail.com | github.com/kohyuk91
+
 import maya.cmds as mc
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
