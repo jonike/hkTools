@@ -7,6 +7,10 @@
     - [scripts/center3d.py](scripts/center3d.py)
     - [https://github.com/kohyuk91/center3d](https://github.com/kohyuk91/center3d)
 1. Cycle Through Visible Cameras Forward & Backward
+    - If there is **only one** visible camera in the scene, jump between **persp camera** and the **one visible camera**.
+        > ![doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif](doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif)<br>
+    - If there are **more than two** visible cameras in the scene, cycle through all **visible cameras**.
+      > ![doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif](doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif)<br>
     - [scripts/cycleThroughVisibleCamerasForward.py](scripts/cycleThroughVisibleCamerasForward.py)
     - [scripts/cycleThroughVisibleCamerasBackward.py](scripts/cycleThroughVisibleCamerasBackward.py)
 1. Dual Image Plane
@@ -25,6 +29,7 @@
 ### Miscellaneous
 1. Toggle Show
 1. Toggle Docked Window
+    > ![doc/toggleDockedWindow.gif](doc/toggleDockedWindow.gif)<br>
     - [scripts/toggleDockedGraphEditor.py](scripts/toggleDockedGraphEditor.py)
 1. Toggle Pickmask
     > ![doc/togglePickmask.gif](doc/togglePickmask.gif)<br>
