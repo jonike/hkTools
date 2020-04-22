@@ -3,16 +3,37 @@
 ## Tool List
 ### Matchmove
 1. Center3D
+    > ![doc/center3d_compare_120f.gif](doc/center3d_compare_120f.gif)<br>
+    - [scripts/center3d.py](scripts/center3d.py)
+    - [https://github.com/kohyuk91/center3d](https://github.com/kohyuk91/center3d)
 1. Cycle Through Visible Cameras Forward & Backward
+    - [scripts/cycleThroughVisibleCamerasForward.py](scripts/cycleThroughVisibleCamerasForward.py)
+    - [scripts/cycleThroughVisibleCamerasBackward.py](scripts/cycleThroughVisibleCamerasBackward.py)
 1. Dual Image Plane
+    - [scripts/dualImagePlane.py](scripts/dualImagePlane.py)
 1. Horizon Line
+    - [scripts/horizonLine.py](scripts/horizonLine.py)
 1. Reset Pan Zoom
+    - [scripts/resetPanZoom.py](scripts/resetPanZoom.py)
 1. TLOC
+    - [scripts/tloc.py](scripts/tloc.py)
+    - [https://github.com/kohyuk91/tloc](https://github.com/kohyuk91/tloc)
 1. ZLOC
+    - [scripts/zloc_maya.py](scripts/zloc_maya.py)
+    - [https://github.com/kohyuk91/zloc](https://github.com/kohyuk91/zloc)
 
 ### Miscellaneous
-1. Toggle `Pickmask`
-1. Toggle `Show`
+1. Toggle Show
+1. Toggle Docked Window
+    - [scripts/toggleDockedGraphEditor.py](scripts/toggleDockedGraphEditor.py)
+1. Toggle Pickmask
+    > ![doc/togglePickmask.gif](doc/togglePickmask.gif)<br>
+    - [scripts/togglePickmaskHandle.py](scripts/togglePickmaskHandle.py)
+    - [scripts/togglePickmaskJoint.py](scripts/togglePickmaskJoint.py)
+    - [scripts/togglePickmaskCurve.py](scripts/togglePickmaskCurve.py)
+    - [scripts/toggleShowPolymeshes.py](scripts/toggleShowPolymeshes.py)
+1. Toggle Pivot
+    - [scripts/toggleDisplayRotatePivot.py](scripts/toggleDisplayRotatePivot.py)
 
 ## Installation
 1. Download and unzip the mayaMatchmoveTools.zip file from [GitHub releases](https://github.com/kohyuk91/mayaMatchmoveTools/releases).
