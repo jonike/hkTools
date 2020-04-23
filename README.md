@@ -9,7 +9,7 @@
 1. Cycle Through Visible Cameras Forward & Backward
     - If there is **only one** visible camera in the scene, jump between **persp camera** and the **one visible camera**.
         > ![doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif](doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif)<br>
-    - If there are **more than two** visible cameras in the scene, cycle through all **visible cameras**.
+    - If there are **more than two** visible cameras in the scene, cycle through **all visible cameras**.
       > ![doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif](doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif)<br>
     - [scripts/cycleThroughVisibleCamerasForward.py](scripts/cycleThroughVisibleCamerasForward.py)
     - [scripts/cycleThroughVisibleCamerasBackward.py](scripts/cycleThroughVisibleCamerasBackward.py)
@@ -47,7 +47,7 @@
 1. Download and unzip the mayaMatchmoveTools.zip file from [GitHub releases](https://github.com/kohyuk91/mayaMatchmoveTools/releases).
 
 1. Drag and drop the `drag_and_drop_install.mel` file onto the Maya viewport.
-
+    > ![doc/drag_and_drop_install.gif](doc/drag_and_drop_install.gif)<br>
 1. Open `Hotkey Editor`
     1. Edit Hotkeys For: `Custom Scripts`
     1. Assign a Hotkey for each command
