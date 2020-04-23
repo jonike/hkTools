@@ -25,6 +25,9 @@
 1. ZLOC
     - [scripts/zloc_maya.py](scripts/zloc_maya.py)
     - [https://github.com/kohyuk91/zloc](https://github.com/kohyuk91/zloc)
+1. Toggle Holdout
+    - [scripts/toggleHoldout.py](scripts/toggleHoldout.py)
+
 
 ### Miscellaneous
 1. Toggle Show
