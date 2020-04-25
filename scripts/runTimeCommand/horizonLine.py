@@ -36,6 +36,8 @@ def main():
 
     mc.pointConstraint(active3dViewCamTrans, horizonLineTrans, maintainOffset=False)
 
+    mc.select(clear=True)
+
 
 if __name__ == "__main__":
     main()

@@ -16,18 +16,18 @@ def _onMayaDropped():
         main()
 
 
-def getScriptNamePathLang():
-    scriptsDir = getScriptsDir()
-    dirItemList = os.listdir(scriptsDir)
+def getRunTimeCommandNamePathLang():
+    runTimeCommandDir = getRunTimeCommandDir()
+    dirItemList = os.listdir(runTimeCommandDir)
 
-    scriptNamePathLang = []
+    runTimeCommandNamePathLang = []
     for dirItem in dirItemList:
         if dirItem.endswith(".py"):
-            scriptNamePathLang.append([dirItem.split(".")[0], os.path.join(scriptsDir, dirItem), "python"])
+            runTimeCommandNamePathLang.append([dirItem.split(".")[0], os.path.join(runTimeCommandDir, dirItem), "python"])
         if dirItem.endswith(".mel"):
-            scriptNamePathLang.append([dirItem.split(".")[0], os.path.join(scriptsDir, dirItem), "mel"])
+            runTimeCommandNamePathLang.append([dirItem.split(".")[0], os.path.join(runTimeCommandDir, dirItem), "mel"])
 
-    return scriptNamePathLang
+    return runTimeCommandNamePathLang
 
 
 def getCommand(scriptPath):
@@ -36,18 +36,18 @@ def getCommand(scriptPath):
     return data
 
 
-def getScriptsDir():
+def getRunTimeCommandDir():
     currentDir = os.path.dirname(__file__)
-    scriptsDir = os.path.join(currentDir, "scripts")
-    return scriptsDir
+    runTimeCommandDir = os.path.join(currentDir, "scripts", "runTimeCommand")
+    return runTimeCommandDir
 
 
-def main():
-    scriptNamePathLangs = getScriptNamePathLang()
+def registerRunTimeCommand():
+    runTimeCommandNamePathLangs = getRunTimeCommandNamePathLang()
     updatedMsg = "\nUpdated...\n\n"
     createdMsg = "\nCreated...\n\n"
-    for scriptNamePathLang in scriptNamePathLangs:
-        name, path, commandLanguage = scriptNamePathLang
+    for runTimeCommandNamePathLang in runTimeCommandNamePathLangs:
+        name, path, commandLanguage = runTimeCommandNamePathLang
         if cmds.runTimeCommand(name, q=True, exists=True):
             cmds.runTimeCommand(name, e=True, delete=True)
             cmds.runTimeCommand(name, category="Custom Scripts", commandLanguage=commandLanguage, command=getCommand(path))
@@ -57,3 +57,7 @@ def main():
             createdMsg += "'{}' runtime command.\n".format(name)
 
     cmds.confirmDialog(title="Results",message="{0}\n-----------------------\n{1}".format(updatedMsg, createdMsg))
+
+
+def main():
+    registerRunTimeCommand()

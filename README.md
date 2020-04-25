@@ -4,44 +4,51 @@
 ### Matchmove
 1. Center3D
     > ![doc/center3d_compare_120f.gif](doc/center3d_compare_120f.gif)<br>
-    - [scripts/center3d.py](scripts/center3d.py)
+    - [scripts/runTimeCommand/center3d.py](scripts/runTimeCommand/center3d.py)
     - [https://github.com/kohyuk91/center3d](https://github.com/kohyuk91/center3d)
 1. Cycle Through Visible Cameras Forward & Backward
     - If there is **only one** visible camera in the scene, jump between **persp camera** and the **one visible camera**.
         > ![doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif](doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif)<br>
     - If there are **more than two** visible cameras in the scene, cycle through **all visible cameras**.
       > ![doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif](doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif)<br>
-    - [scripts/cycleThroughVisibleCamerasForward.py](scripts/cycleThroughVisibleCamerasForward.py)
-    - [scripts/cycleThroughVisibleCamerasBackward.py](scripts/cycleThroughVisibleCamerasBackward.py)
+    - [scripts/runTimeCommand/cycleThroughVisibleCamerasForward.py](scripts/runTimeCommand/cycleThroughVisibleCamerasForward.py)
+    - [scripts/runTimeCommand/cycleThroughVisibleCamerasBackward.py](scripts/runTimeCommand/cycleThroughVisibleCamerasBackward.py)
 1. Dual Image Plane
-    - [scripts/dualImagePlane.py](scripts/dualImagePlane.py)
+    - [scripts/runTimeCommand/dualImagePlane.py](scripts/runTimeCommand/dualImagePlane.py)
 1. Horizon Line
-    - [scripts/horizonLine.py](scripts/horizonLine.py)
+    - [scripts/runTimeCommand/horizonLine.py](scripts/runTimeCommand/horizonLine.py)
 1. Reset Pan Zoom
-    - [scripts/resetPanZoom.py](scripts/resetPanZoom.py)
+    - [scripts/runTimeCommand/resetPanZoom.py](scripts/runTimeCommand/resetPanZoom.py)
 1. TLOC
-    - [scripts/tloc.py](scripts/tloc.py)
+    - [scripts/runTimeCommand/tloc.py](scripts/runTimeCommand/tloc.py)
     - [https://github.com/kohyuk91/tloc](https://github.com/kohyuk91/tloc)
 1. ZLOC
-    - [scripts/zloc_maya.py](scripts/zloc_maya.py)
+    - [scripts/shelf/zloc_maya.py](scripts/shelf/zloc_maya.py)
     - [https://github.com/kohyuk91/zloc](https://github.com/kohyuk91/zloc)
-1. Toggle Holdout
-    - [scripts/toggleHoldout.py](scripts/toggleHoldout.py)
-
 
 ### Miscellaneous
+1. Smart Save
+    - Similar to "Save New Comp Version" in Foundry Nuke.
+    - [scripts/runTimeCommand/smartSave.py](scripts/runTimeCommand/smartSave.py)
+1. Toggle Holdout
+    - [scripts/runTimeCommand/toggleHoldout.py](scripts/runTimeCommand/toggleHoldout.py)
 1. Toggle Show
 1. Toggle Docked Window
     > ![doc/toggleDockedWindow.gif](doc/toggleDockedWindow.gif)<br>
-    - [scripts/toggleDockedGraphEditor.py](scripts/toggleDockedGraphEditor.py)
+    - [scripts/runTimeCommand/toggleDockedGraphEditor.py](scripts/runTimeCommand/toggleDockedGraphEditor.py)
 1. Toggle Pickmask
     > ![doc/togglePickmask.gif](doc/togglePickmask.gif)<br>
-    - [scripts/togglePickmaskHandle.py](scripts/togglePickmaskHandle.py)
-    - [scripts/togglePickmaskJoint.py](scripts/togglePickmaskJoint.py)
-    - [scripts/togglePickmaskCurve.py](scripts/togglePickmaskCurve.py)
-    - [scripts/toggleShowPolymeshes.py](scripts/toggleShowPolymeshes.py)
+    - [scripts/runTimeCommand/togglePickmaskHandle.py](scripts/runTimeCommand/togglePickmaskHandle.py)
+    - [scripts/runTimeCommand/togglePickmaskJoint.py](scripts/runTimeCommand/togglePickmaskJoint.py)
+    - [scripts/runTimeCommand/togglePickmaskCurve.py](scripts/runTimeCommand/togglePickmaskCurve.py)
+    - [scripts/runTimeCommand/togglePickmaskSurface.py](scripts/runTimeCommand/togglePickmaskSurface.py)
+    - [scripts/runTimeCommand/togglePickmaskDeformation.py](scripts/runTimeCommand/togglePickmaskDeformation.py)
+    - [scripts/runTimeCommand/togglePickmaskDynamic.py](scripts/runTimeCommand/togglePickmaskDynamic.py)
+    - [scripts/runTimeCommand/togglePickmaskRendering.py](scripts/runTimeCommand/togglePickmaskRendering.py)
+    - [scripts/runTimeCommand/togglePickmaskMisc.py](scripts/runTimeCommand/togglePickmaskMisc.py)
+    - [scripts/runTimeCommand/togglePickmaskAll.py](scripts/runTimeCommand/togglePickmaskAll.py)
 1. Toggle Pivot
-    - [scripts/toggleDisplayRotatePivot.py](scripts/toggleDisplayRotatePivot.py)
+    - [scripts/runTimeCommand/toggleDisplayRotatePivot.py](scripts/runTimeCommand/toggleDisplayRotatePivot.py)
 
 ## Installation
 1. Download and unzip the mayaMatchmoveTools.zip file from [GitHub releases](https://github.com/kohyuk91/mayaMatchmoveTools/releases).
