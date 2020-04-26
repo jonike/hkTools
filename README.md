@@ -2,10 +2,11 @@
 
 ## What does it do
 - Tools for matchmove, layout and animation related tasks in Autodesk Maya.
-- **Dead-Simple Installation**. Just drag and drop the `drag_and_drop_install.mel` file onto the Maya viewport.
+- **Dead-Simple Installation**. Just drag and drop the `install.mel` file onto the Maya viewport.
+    > ![doc/install.gif](doc/install.gif)<br>
 - Creates **Run Time Commands** that you can assign hotkeys to.
-- Creates a **Shelf** filled with custom & native scripts.
-
+- Creates **mayaMMTools** Shelf.
+    > ![doc/mayaMMToolsShelf.png](doc/mayaMMToolsShelf.png)<br>
 
 ## Tool List
 ### Matchmove & Layout & Animation(Run Time Command)
@@ -14,9 +15,9 @@
     - [scripts/runTimeCommand/center3d.py](scripts/runTimeCommand/center3d.py)
     - [https://github.com/kohyuk91/center3d](https://github.com/kohyuk91/center3d)
 1. Cycle Through Visible Cameras Forward & Backward
-    - If there is **only one** visible camera in the scene, jump between **persp camera** and the **one visible camera**.
+    - If there is **only one visible camera** in the scene, jump between **persp camera** and the **one visible camera**.
         > ![doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif](doc/cycleThroughVisibleCameras_onlyOneVisibleCamera.gif)<br>
-    - If there are **more than two** visible cameras in the scene, cycle through **all visible cameras**.
+    - If there are **more than two visible cameras** in the scene, cycle through **all visible cameras**.
       > ![doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif](doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif)<br>
     - [scripts/runTimeCommand/cycleThroughVisibleCamerasForward.py](scripts/runTimeCommand/cycleThroughVisibleCamerasForward.py)
     - [scripts/runTimeCommand/cycleThroughVisibleCamerasBackward.py](scripts/runTimeCommand/cycleThroughVisibleCamerasBackward.py)
@@ -34,13 +35,18 @@
 1. ATOM Clipboard
     - [scripts/shelf/atomClipboard.py](scripts/shelf/atomClipboard.py)
 1. Baker
+    - Interface
+        > ![doc/baker.png](doc/baker.png)<br>
     - [scripts/shelf/baker.py](scripts/shelf/baker.py)
 1. Dual Image Plane
     - [scripts/shelf/dualImagePlane.py](scripts/shelf/dualImagePlane.py)
 1. Horizon Line
     - [scripts/shelf/horizonLine.py](scripts/shelf/horizonLine.py)
+1. Loc Cone
+    > ![doc/locCone.gif](doc/locCone.gif)<br>
+    - [scripts/shelf/locCone.py](scripts/shelf/locCone.py)    
 1. Overscan
-    - [scripts/shelf/overscan.py](scripts/shelf/overscan.py)
+    - [scripts/shelf/overScan.py](scripts/shelf/overScan.py)
 1. Switch
     - [Video Overview - YouTube](https://youtu.be/Z8jkflm7IdI)
         > [![](http://img.youtube.com/vi/Z8jkflm7IdI/0.jpg)](http://www.youtube.com/watch?v=Z8jkflm7IdI "")<br>
@@ -48,6 +54,8 @@
         > ![doc/switch.png](doc/switch.png)<br>
     - [scripts/shelf/switch.py](scripts/shelf/switch.py)
 1. ZLOC
+    - Interface
+        > ![doc/zloc_maya.png](doc/zloc_maya.png)<br>
     - [scripts/shelf/zloc_maya.py](scripts/shelf/zloc_maya.py)
     - [https://github.com/kohyuk91/zloc](https://github.com/kohyuk91/zloc)
 
@@ -78,7 +86,7 @@
 ## Installation
 1. Download and unzip the mayaMatchmoveTools.zip file from [GitHub releases](https://github.com/kohyuk91/mayaMatchmoveTools/releases).
 1. Drag and drop the `drag_and_drop_install.mel` file onto the Maya viewport.
-    > ![doc/drag_and_drop_install.gif](doc/drag_and_drop_install.gif)<br>
+    > ![doc/install.gif](doc/install.gif)<br>
 1. Open `Hotkey Editor`
     1. Edit Hotkeys For: `Custom Scripts`
     1. Assign a Hotkey for each command

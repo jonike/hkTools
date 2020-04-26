@@ -4,6 +4,7 @@
 
 
 import os
+import re
 
 try:
     from maya import mel
@@ -84,6 +85,20 @@ def createUpdateRunTimeCommand():
     cmds.confirmDialog(title="Run Time Command Results",message="{0}\n-----------------------\n{1}".format(updatedMsg, createdMsg))
 
 
+def camel_case_split(str):
+    """
+    e.g. str = "mayaMatchmoveTools" >> ['maya', 'Matchmove', 'Tools']
+    e.g. str = "MayaMatchmoveTools" >> ['Maya', 'Matchmove', 'Tools']
+    """
+    return re.findall(r'[a-zA-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', str)
+
+
+def labelfy(name):
+    strings = camel_case_split(name)
+    labelName = '\n\n' + '\n'.join(strings)
+    return labelName
+
+
 def _null(*args):
     pass
 
@@ -98,7 +113,7 @@ class _shelf():
 
         self.iconPath = iconPath
 
-        self.labelBackground = (0, 0, 0, 0)
+        self.labelBackground = (0, 0, 0, 1)
         self.labelColour = (.9, .9, .9)
 
         self._cleanOldShelf()
@@ -115,10 +130,10 @@ class _shelf():
         cmds.setParent(self.name)
         if icon:
             icon = self.iconPath + icon
-        cmds.shelfButton(width=37, height=37, image=icon, l=label, command=command, dcc=doubleCommand, imageOverlayLabel=label, olb=self.labelBackground, olc=self.labelColour, stp=sourceType, noDefaultPopup=True)
+        cmds.shelfButton(image=icon, l=label, command=command, dcc=doubleCommand, imageOverlayLabel=label, olb=self.labelBackground, olc=self.labelColour, stp=sourceType, noDefaultPopup=True)
 
     def addSeparator(self):
-        cmds.separator(enable=True, width=12, height=31, manage=True, visible=True, style="shelf", horizontal=False)
+        cmds.separator(enable=True, width=24, height=31, manage=True, visible=True, style="shelf", horizontal=False)
 
     def addMenuItem(self, parent, label, command=_null, icon=""):
         '''Adds a shelf button with the specified label, command, double click command and image.'''
@@ -148,7 +163,8 @@ class customShelf(_shelf):
         self.shelfNamePathLangs = getShelfNamePathLang()
         for shelfNamePathLang in self.shelfNamePathLangs:
             name, path, commandLanguage = shelfNamePathLang
-            self.addButon(label=name, sourceType=commandLanguage, command=getCommand(path))
+            labelName = labelfy(name).upper()
+            self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path))
 
         # Add shelf buttons manually from this point...
 
@@ -160,13 +176,13 @@ class customShelf(_shelf):
 
         self.addSeparator()
 
-        self.addButon(label="", icon="locator.png", sourceType="mel", command="CreateLocator")
-        self.addButon(label="", icon="cluster.png", sourceType="mel", command="CreateClusterOptions")
+        self.addButon(label="", icon="motionTrail.png", sourceType="mel", command="CreateMotionTrailOptions")
+        self.addButon(label="", icon="bakeAnimation.png", sourceType="mel", command="BakeSimulationOptions")
 
         self.addSeparator()
 
-        self.addButon(label="", icon="motionTrail.png", sourceType="mel", command="CreateMotionTrailOptions")
-        self.addButon(label="", icon="bakeAnimation.png", sourceType="mel", command="BakeSimulationOptions")
+        self.addButon(label="", icon="locator.png", sourceType="mel", command="CreateLocator")
+        self.addButon(label="", icon="cluster.png", sourceType="mel", command="CreateClusterOptions")
 
 
 def createUpdateShelf():

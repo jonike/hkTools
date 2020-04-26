@@ -1,7 +1,6 @@
 # Author : HYUK KO | kohyuk91@gmail.com | github.com/kohyuk91
 
 import maya.cmds as mc
-import maya.mel as mm
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 
@@ -41,7 +40,7 @@ def main():
     mc.expression(s="{0}.depth = {1}.nearClipPlane + 1".format(dualImagePlaneShape, active3dViewCamShape), object=dualImagePlaneTrans)
 
 
-    mm.eval("AttributeEditor;")
+    mc.AttributeEditor()
 
 if __name__ == "__main__":
     main()
