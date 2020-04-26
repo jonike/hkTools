@@ -1,14 +1,14 @@
 # Author : HYUK KO | kohyuk91@gmail.com | github.com/kohyuk91
 
 """
-import atomClipboard
+import quickAtom
 try:
-    acb.close()
-    acb.deleteLater()
+    qa.close()
+    qa.deleteLater()
 except:
     pass
-acb = atomClipboard.AtomClipboard()
-acb.show()
+qa = quickAtom.QuickAtom()
+qa.show()
 """
 
 import maya.cmds as mc
@@ -58,7 +58,7 @@ def loadPlugin(pluginName):
 
 
 
-class AtomClipboard(QtWidgets.QDialog):
+class QuickAtom(QtWidgets.QDialog):
     @classmethod
     def maya_main_window(cls):
         main_window_ptr = omui.MQtUtil.mainWindow()
@@ -66,9 +66,9 @@ class AtomClipboard(QtWidgets.QDialog):
 
 
     def __init__(self):
-        super(AtomClipboard, self).__init__(self.maya_main_window())
+        super(QuickAtom, self).__init__(self.maya_main_window())
 
-        self.setWindowTitle("ATOM Clipboard")
+        self.setWindowTitle("Quick ATOM")
         self.setWindowFlags(self.windowFlags() ^ QtCore.Qt.WindowContextHelpButtonHint)
 
         self.create_widgets()
@@ -135,17 +135,17 @@ class AtomClipboard(QtWidgets.QDialog):
 
 
     def create_connections(self):
-        self.export_btn.clicked.connect(lambda: self.atomClipboard("atomExport"))
-        self.import_btn.clicked.connect(lambda: self.atomClipboard("atomImport"))
+        self.export_btn.clicked.connect(lambda: self.atom("atomExport"))
+        self.import_btn.clicked.connect(lambda: self.atom("atomImport"))
 
 
     def getAtomFilepath(self):
-        atomFileName = "atomClipboard.atom"
+        atomFileName = "quick.atom"
         atomFilePath = os.path.join(TMPDIR, atomFileName)
         return atomFilePath
 
 
-    def atomClipboard(self, mode):
+    def atom(self, mode):
         loadPlugin("atomImportExport")
 
         atomFilePath = self.getAtomFilepath()
@@ -179,9 +179,9 @@ class AtomClipboard(QtWidgets.QDialog):
 
 if __name__ == "__main__":
     try:
-        acb.close()
-        acb.deleteLater()
+        qa.close()
+        qa.deleteLater()
     except:
         pass
-    acb = AtomClipboard()
-    acb.show()
+    qa = QuickAtom()
+    qa.show()

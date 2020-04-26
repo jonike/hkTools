@@ -5,6 +5,7 @@
 - **Dead-Simple Installation**. Just drag and drop the `install.mel` file onto the Maya viewport.
     > ![doc/install.gif](doc/install.gif)<br>
 - Creates **Run Time Commands** that you can assign hotkeys to.
+    > ![doc/hotkeyEditor_runTimeCommand.gif](doc/hotkeyEditor_runTimeCommand.gif)<br>
 - Creates **mayaMMTools** Shelf.
     > ![doc/mayaMMToolsShelf.png](doc/mayaMMToolsShelf.png)<br>
 
