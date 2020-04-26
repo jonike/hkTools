@@ -1,7 +1,14 @@
 # Maya Matchmove Tools
 
+## What does it do
+- Tools for matchmove, layout and animation related tasks in Autodesk Maya.
+- **Dead-Simple Installation**. Just drag and drop the `drag_and_drop_install.mel` file onto the Maya viewport.
+- Creates **Run Time Commands** that you can assign hotkeys to.
+- Creates a **Shelf** filled with custom & native scripts.
+
+
 ## Tool List
-### Matchmove
+### Matchmove & Layout & Animation(Run Time Command)
 1. Center3D
     > ![doc/center3d_compare_120f.gif](doc/center3d_compare_120f.gif)<br>
     - [scripts/runTimeCommand/center3d.py](scripts/runTimeCommand/center3d.py)
@@ -13,25 +20,42 @@
       > ![doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif](doc/cycleThroughVisibleCameras_twoOrMoreVisibleCameras.gif)<br>
     - [scripts/runTimeCommand/cycleThroughVisibleCamerasForward.py](scripts/runTimeCommand/cycleThroughVisibleCamerasForward.py)
     - [scripts/runTimeCommand/cycleThroughVisibleCamerasBackward.py](scripts/runTimeCommand/cycleThroughVisibleCamerasBackward.py)
-1. Dual Image Plane
-    - [scripts/runTimeCommand/dualImagePlane.py](scripts/runTimeCommand/dualImagePlane.py)
-1. Horizon Line
-    - [scripts/runTimeCommand/horizonLine.py](scripts/runTimeCommand/horizonLine.py)
 1. Reset Pan Zoom
     - [scripts/runTimeCommand/resetPanZoom.py](scripts/runTimeCommand/resetPanZoom.py)
 1. TLOC
+    - "T"riangulate + "Loc"ator. TLOC helps you to triangulate points with ease.
     - [scripts/runTimeCommand/tloc.py](scripts/runTimeCommand/tloc.py)
     - [https://github.com/kohyuk91/tloc](https://github.com/kohyuk91/tloc)
+1. Toggle Holdout
+    - [scripts/runTimeCommand/toggleHoldout.py](scripts/runTimeCommand/toggleHoldout.py)
+
+
+### Matchmove & Layout & Animation(Shelf)
+1. ATOM Clipboard
+    - [scripts/shelf/atomClipboard.py](scripts/shelf/atomClipboard.py)
+1. Baker
+    - [scripts/shelf/baker.py](scripts/shelf/baker.py)
+1. Dual Image Plane
+    - [scripts/shelf/dualImagePlane.py](scripts/shelf/dualImagePlane.py)
+1. Horizon Line
+    - [scripts/shelf/horizonLine.py](scripts/shelf/horizonLine.py)
+1. Overscan
+    - [scripts/shelf/overscan.py](scripts/shelf/overscan.py)
+1. Switch
+    - [Video Overview - YouTube](https://youtu.be/Z8jkflm7IdI)
+        > [![](http://img.youtube.com/vi/Z8jkflm7IdI/0.jpg)](http://www.youtube.com/watch?v=Z8jkflm7IdI "")<br>
+    - Interface
+        > ![doc/switch.png](doc/switch.png)<br>
+    - [scripts/shelf/switch.py](scripts/shelf/switch.py)
 1. ZLOC
     - [scripts/shelf/zloc_maya.py](scripts/shelf/zloc_maya.py)
     - [https://github.com/kohyuk91/zloc](https://github.com/kohyuk91/zloc)
 
-### Miscellaneous
+
+### Miscellaneous(Run Time Command)
 1. Smart Save
     - Similar to "Save New Comp Version" in Foundry Nuke.
     - [scripts/runTimeCommand/smartSave.py](scripts/runTimeCommand/smartSave.py)
-1. Toggle Holdout
-    - [scripts/runTimeCommand/toggleHoldout.py](scripts/runTimeCommand/toggleHoldout.py)
 1. Toggle Show
 1. Toggle Docked Window
     > ![doc/toggleDockedWindow.gif](doc/toggleDockedWindow.gif)<br>
@@ -50,9 +74,9 @@
 1. Toggle Pivot
     - [scripts/runTimeCommand/toggleDisplayRotatePivot.py](scripts/runTimeCommand/toggleDisplayRotatePivot.py)
 
+
 ## Installation
 1. Download and unzip the mayaMatchmoveTools.zip file from [GitHub releases](https://github.com/kohyuk91/mayaMatchmoveTools/releases).
-
 1. Drag and drop the `drag_and_drop_install.mel` file onto the Maya viewport.
     > ![doc/drag_and_drop_install.gif](doc/drag_and_drop_install.gif)<br>
 1. Open `Hotkey Editor`
