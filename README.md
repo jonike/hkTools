@@ -1,4 +1,4 @@
-# Maya Matchmove Tools
+# hkTools
 
 ## What does it do
 - Tools for matchmove, layout and animation related tasks in Autodesk Maya.
@@ -6,7 +6,7 @@
     > ![doc/install.gif](doc/install.gif)<br>
 - Creates **Run Time Commands** that you can assign hotkeys to.
     > ![doc/hotkeyEditor_runTimeCommand.gif](doc/hotkeyEditor_runTimeCommand.gif)<br>
-- Creates **mayaMMTools** Shelf.
+- Creates **hkTools** Shelf.
     > ![doc/mayaMMToolsShelf.png](doc/mayaMMToolsShelf.png)<br>
 
 ## Tool List
@@ -33,8 +33,6 @@
 
 
 ### Matchmove & Layout & Animation(Shelf)
-1. ATOM Clipboard
-    - [scripts/shelf/atomClipboard.py](scripts/shelf/atomClipboard.py)
 1. Baker
     - Interface
         > ![doc/baker.png](doc/baker.png)<br>
@@ -48,6 +46,8 @@
     - [scripts/shelf/locCone.py](scripts/shelf/locCone.py)    
 1. Overscan
     - [scripts/shelf/overScan.py](scripts/shelf/overScan.py)
+1. Quick ATOM
+    - [scripts/shelf/quickAtom.py](scripts/shelf/quickAtom.py)
 1. Switch
     - [Video Overview - YouTube](https://youtu.be/Z8jkflm7IdI)
         > [![](http://img.youtube.com/vi/Z8jkflm7IdI/0.jpg)](http://www.youtube.com/watch?v=Z8jkflm7IdI "")<br>
@@ -89,5 +89,6 @@
 1. Drag and drop the `drag_and_drop_install.mel` file onto the Maya viewport.
     > ![doc/install.gif](doc/install.gif)<br>
 1. Open `Hotkey Editor`
+    > ![doc/hotkeyEditor_runTimeCommand.gif](doc/hotkeyEditor_runTimeCommand.gif)<br>
     1. Edit Hotkeys For: `Custom Scripts`
     1. Assign a Hotkey for each command

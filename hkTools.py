@@ -108,7 +108,7 @@ class _shelf():
     it should be extended by the derived class to build the necessary shelf elements.
     By default it creates an empty shelf called "customShelf".'''
 
-    def __init__(self, name="mayaMMTools", iconPath=""):
+    def __init__(self, name="hkTools", iconPath=""):
         self.name = name
 
         self.iconPath = iconPath

@@ -5,8 +5,8 @@ global proc install() {
     string $sourceLocation = `substitute "install.mel" $path ""`;
     python("import sys");
     python("sys.path.append('" + $sourceLocation + "')");
-    python("import mayaMatchmoveTools");
-    python("mayaMatchmoveTools._onMayaDropped()");
+    python("import hkTools");
+    python("hkTools._onMayaDropped()");
 }
 
 install();
