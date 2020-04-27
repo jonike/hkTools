@@ -77,7 +77,6 @@ class Baker(QtWidgets.QDialog):
         self.create_layouts()
         self.create_connections()
 
-        self.show()
 
     def create_widgets(self):
         self.start_frame_lb = QtWidgets.QLabel("Start")
