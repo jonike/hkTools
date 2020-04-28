@@ -75,6 +75,7 @@ class QuickAtom(QtWidgets.QDialog):
         self.create_layouts()
         self.create_connections()
 
+        self.loadSettings()
 
     def create_widgets(self):
         self.export_include_lb = QtWidgets.QLabel("Include:")
@@ -93,14 +94,14 @@ class QuickAtom(QtWidgets.QDialog):
 
         self.export_hierarchy_lb = QtWidgets.QLabel("Hierarchy:")
         self.export_hierarchy_selected_rb = QtWidgets.QRadioButton("Selected")
+        self.export_hierarchy_selected_rb.toggle()
         self.export_hierarchy_below_rb = QtWidgets.QRadioButton("Below")
-        self.export_hierarchy_below_rb.toggle()
         self.export_btn = QtWidgets.QPushButton("Export")
 
         self.import_hierarchy_lb = QtWidgets.QLabel("Hierarchy:")
         self.import_hierarchy_selected_rb = QtWidgets.QRadioButton("Selected")
+        self.import_hierarchy_selected_rb.toggle()
         self.import_hierarchy_below_rb = QtWidgets.QRadioButton("Below")
-        self.import_hierarchy_below_rb.toggle()
         self.import_btn = QtWidgets.QPushButton("Import")
 
 
@@ -145,6 +146,46 @@ class QuickAtom(QtWidgets.QDialog):
         return atomFilePath
 
 
+    def loadSettings(self):
+        if mc.optionVar(exists="quickAtom_export_include_setDrivenKeys_cb"):
+            self.export_include_setDrivenKeys_cb.setChecked(True) if mc.optionVar(q="quickAtom_export_include_setDrivenKeys_cb") else self.export_include_setDrivenKeys_cb.setChecked(False)
+        if mc.optionVar(exists="quickAtom_export_include_constraints_cb"):
+            self.export_include_constraints_cb.setChecked(True) if mc.optionVar(q="quickAtom_export_include_constraints_cb") else self.export_include_constraints_cb.setChecked(False)
+        if mc.optionVar(exists="quickAtom_export_include_animationLayers_cb"):
+            self.export_include_animationLayers_cb.setChecked(True) if mc.optionVar(q="quickAtom_export_include_animationLayers_cb") else self.export_include_animationLayers_cb.setChecked(False)
+        if mc.optionVar(exists="quickAtom_export_include_staticValues_cb"):
+            self.export_include_staticValues_cb.setChecked(True) if mc.optionVar(q="quickAtom_export_include_staticValues_cb") else self.export_include_staticValues_cb.setChecked(False)
+        if mc.optionVar(exists="quickAtom_export_include_bakedAnimation_cb"):
+            self.export_include_bakedAnimation_cb.setChecked(True) if mc.optionVar(q="quickAtom_export_include_bakedAnimation_cb") else self.export_include_bakedAnimation_cb.setChecked(False)
+        if mc.optionVar(exists="quickAtom_export_include_controlPoints_cb"):
+            self.export_include_controlPoints_cb.setChecked(True) if mc.optionVar(q="quickAtom_export_include_controlPoints_cb") else self.export_include_controlPoints_cb.setChecked(False)
+
+        if mc.optionVar(exists="quickAtom_export_hierarchy_selected_rb"):
+            if mc.optionVar(q="quickAtom_export_hierarchy_selected_rb"): self.export_hierarchy_selected_rb.setChecked(True)
+        if mc.optionVar(exists="quickAtom_export_hierarchy_below_rb"):
+            if mc.optionVar(q="quickAtom_export_hierarchy_below_rb"): self.export_hierarchy_below_rb.setChecked(True)
+
+        if mc.optionVar(exists="quickAtom_import_hierarchy_selected_rb"):
+            if mc.optionVar(q="quickAtom_import_hierarchy_selected_rb"): self.import_hierarchy_selected_rb.setChecked(True)
+        if mc.optionVar(exists="quickAtom_import_hierarchy_below_rb"):
+            if mc.optionVar(q="quickAtom_import_hierarchy_below_rb"): self.import_hierarchy_below_rb.setChecked(True)
+
+
+    def saveSettings(self):
+        mc.optionVar(intValue=("quickAtom_export_include_setDrivenKeys_cb", self.export_include_setDrivenKeys_cb.isChecked()))
+        mc.optionVar(intValue=("quickAtom_export_include_constraints_cb", self.export_include_constraints_cb.isChecked()))
+        mc.optionVar(intValue=("quickAtom_export_include_animationLayers_cb", self.export_include_animationLayers_cb.isChecked()))
+        mc.optionVar(intValue=("quickAtom_export_include_staticValues_cb", self.export_include_staticValues_cb.isChecked()))
+        mc.optionVar(intValue=("quickAtom_export_include_bakedAnimation_cb", self.export_include_bakedAnimation_cb.isChecked()))
+        mc.optionVar(intValue=("quickAtom_export_include_controlPoints_cb", self.export_include_controlPoints_cb.isChecked()))
+
+        mc.optionVar(intValue=("quickAtom_export_hierarchy_selected_rb", self.export_hierarchy_selected_rb.isChecked()))
+        mc.optionVar(intValue=("quickAtom_export_hierarchy_below_rb", self.export_hierarchy_below_rb.isChecked()))
+
+        mc.optionVar(intValue=("quickAtom_import_hierarchy_selected_rb", self.import_hierarchy_selected_rb.isChecked()))
+        mc.optionVar(intValue=("quickAtom_import_hierarchy_below_rb", self.import_hierarchy_below_rb.isChecked()))
+
+
     def atom(self, mode):
         loadPlugin("atomImportExport")
 
@@ -175,6 +216,8 @@ class QuickAtom(QtWidgets.QDialog):
                 mc.file(atomFilePath, i=True, type="atomImport", ra=True, namespace="atom", options=options)
             except:
                 mc.warning("Something went wrong.")
+
+        self.saveSettings()
 
 
 if __name__ == "__main__":

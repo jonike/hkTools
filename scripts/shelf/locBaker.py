@@ -30,15 +30,15 @@
 
 
 """
-import baker
-reload(baker)
+import locBaker
+reload(locBaker)
 try:
-    b.close()
-    b.deleteLater()
+    lb.close()
+    lb.deleteLater()
 except:
     pass
-b = baker.Baker()
-b.show()
+lb = locBaker.LocBaker()
+lb.show()
 """
 
 
@@ -50,26 +50,43 @@ except ImportError:
     from PySide2 import QtGui, QtCore, QtWidgets
     import shiboken2 as shiboken
 
-
 import maya.cmds as mc
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 
-
 import traceback
+from functools import wraps
 
 
-class Baker(QtWidgets.QDialog):
+# Decorator for undo support.
+def openCloseChunk(func):
+    @wraps(func)
+    def wrapper(*args, **kargs):
+        action = None
+        try:
+            mc.undoInfo(openChunk=True)
+            action = func(*args, **kargs)
+        except:
+            print(traceback.format_exc())
+            pass
+        finally:
+            mc.undoInfo(closeChunk=True)
+            return action
+
+    return wrapper
+
+
+class LocBaker(QtWidgets.QDialog):
     @classmethod
     def maya_main_window(cls):
         main_window_ptr = omui.MQtUtil.mainWindow()
         return shiboken.wrapInstance(long(main_window_ptr), QtWidgets.QWidget)
 
     def __init__(self):
-        super(Baker, self).__init__(self.maya_main_window())
+        super(LocBaker, self).__init__(self.maya_main_window())
         self.setMaximumWidth(200)
 
-        self.setWindowTitle("Baker")
+        self.setWindowTitle("Loc Baker")
         self.setWindowFlags(self.windowFlags() ^ QtCore.Qt.WindowContextHelpButtonHint)
         #self.setStyleSheet("QDialog {background-color: rgb(25, 25, 25);} QGroupBox {background-color: rgb(35, 35, 35); border: 10px solid rgb(35, 35, 35);}")
 
@@ -216,81 +233,75 @@ class Baker(QtWidgets.QDialog):
             self.start_frame_le.setText(str(int(mc.playbackOptions(q=True, minTime=True))))
             self.end_frame_le.setText(str(int(mc.playbackOptions(q=True, maxTime=True))))
 
+    @openCloseChunk
     def bake(self, mode):
-        mc.undoInfo(openChunk=True)
-        try:
-            # Get List of selected Transform Nodes
-            selTransList = mc.ls(selection=True, transforms=True, long=True)
+        # Get List of selected Transform Nodes
+        selTransList = mc.ls(selection=True, transforms=True, long=True)
 
-            locList = []
-            pcList = []
-            ocList = []
-            scList = []
-            for trans in selTransList:
-                # Create Locator
-                #loc = mc.spaceLocator(name="baked{0}".format(trans))[0]
-                loc = mc.spaceLocator(name="bakerLoc_#")[0]
-                locList.append(loc)
+        locList = []
+        pcList = []
+        ocList = []
+        scList = []
+        for trans in selTransList:
+            # Create Locator
+            #loc = mc.spaceLocator(name="baked{0}".format(trans))[0]
+            loc = mc.spaceLocator(name="bakerLoc_#")[0]
+            locList.append(loc)
 
-                # Set Rotate Order
-                if self.rotateOrder_inherit_rb.isChecked(): mc.setAttr(loc+".rotateOrder", mc.getAttr(trans+".rotateOrder"))
-                if self.rotateOrder_xyz_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 0)
-                if self.rotateOrder_yzx_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 1)
-                if self.rotateOrder_zxy_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 2)
-                if self.rotateOrder_xzy_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 3)
-                if self.rotateOrder_yxz_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 4)
-                if self.rotateOrder_zyx_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 5)
+            # Set Rotate Order
+            if self.rotateOrder_inherit_rb.isChecked(): mc.setAttr(loc+".rotateOrder", mc.getAttr(trans+".rotateOrder"))
+            if self.rotateOrder_xyz_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 0)
+            if self.rotateOrder_yzx_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 1)
+            if self.rotateOrder_zxy_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 2)
+            if self.rotateOrder_xzy_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 3)
+            if self.rotateOrder_yxz_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 4)
+            if self.rotateOrder_zyx_rb.isChecked(): mc.setAttr(loc+".rotateOrder", 5)
 
-                if self.point_groupbox.isChecked():
-                    pskip = ""
-                    if self.point_x_cb.isChecked() == False: pskip += ", skip='x'"
-                    if self.point_y_cb.isChecked() == False: pskip += ", skip='y'"
-                    if self.point_z_cb.isChecked() == False: pskip += ", skip='z'"
-                    exec("pc = mc.pointConstraint(trans, loc, maintainOffset=False {0})".format(pskip))
-                    pcList.append(pc)
-                if self.orient_groupbox.isChecked():
-                    oskip = ""
-                    if self.orient_x_cb.isChecked() == False: skip += ", skip='x'"
-                    if self.orient_y_cb.isChecked() == False: skip += ", skip='y'"
-                    if self.orient_z_cb.isChecked() == False: skip += ", skip='z'"
-                    exec("oc = mc.orientConstraint(trans, loc, maintainOffset=False {0})".format(oskip))
-                    ocList.append(oc)
-                if self.scale_groupbox.isChecked():
-                    sskip = ""
-                    if self.scale_x_cb.isChecked() == False: skip += ", skip='x'"
-                    if self.scale_y_cb.isChecked() == False: skip += ", skip='y'"
-                    if self.scale_z_cb.isChecked() == False: skip += ", skip='z'"
-                    exec("sc = mc.scaleConstraint(trans, loc, maintainOffset=False {0})".format(sskip))
-                    scList.append(sc)
+            if self.point_groupbox.isChecked():
+                pskip = ""
+                if self.point_x_cb.isChecked() == False: pskip += ", skip='x'"
+                if self.point_y_cb.isChecked() == False: pskip += ", skip='y'"
+                if self.point_z_cb.isChecked() == False: pskip += ", skip='z'"
+                exec("pc = mc.pointConstraint(trans, loc, maintainOffset=False {0})".format(pskip))
+                pcList.append(pc)
+            if self.orient_groupbox.isChecked():
+                oskip = ""
+                if self.orient_x_cb.isChecked() == False: skip += ", skip='x'"
+                if self.orient_y_cb.isChecked() == False: skip += ", skip='y'"
+                if self.orient_z_cb.isChecked() == False: skip += ", skip='z'"
+                exec("oc = mc.orientConstraint(trans, loc, maintainOffset=False {0})".format(oskip))
+                ocList.append(oc)
+            if self.scale_groupbox.isChecked():
+                sskip = ""
+                if self.scale_x_cb.isChecked() == False: skip += ", skip='x'"
+                if self.scale_y_cb.isChecked() == False: skip += ", skip='y'"
+                if self.scale_z_cb.isChecked() == False: skip += ", skip='z'"
+                exec("sc = mc.scaleConstraint(trans, loc, maintainOffset=False {0})".format(sskip))
+                scList.append(sc)
 
-            # Bake
-            if self.start_frame_le.text() != self.end_frame_le.text(): # If Start & End Frame is not same, Bake.
-                mc.bakeResults(locList, simulation=True, attribute=["tx","ty","tz","rx","ry","rz","sx","sy","sz"], time=(self.start_frame_le.text(), self.end_frame_le.text()))
+        # Bake
+        if self.start_frame_le.text() != self.end_frame_le.text(): # If Start & End Frame is not same, Bake.
+            mc.bakeResults(locList, simulation=True, attribute=["tx","ty","tz","rx","ry","rz","sx","sy","sz"], time=(self.start_frame_le.text(), self.end_frame_le.text()))
 
-            # Delete Constraints
-            for pc in pcList:
-                try:
-                    mc.delete(pc)
-                except:
-                    pass
-            for oc in ocList:
-                try:
-                    mc.delete(oc)
-                except:
-                    pass
-            for sc in scList:
-                try:
-                    mc.delete(sc)
-                except:
-                    pass
+        # Delete Constraints
+        for pc in pcList:
+            try:
+                mc.delete(pc)
+            except:
+                pass
+        for oc in ocList:
+            try:
+                mc.delete(oc)
+            except:
+                pass
+        for sc in scList:
+            try:
+                mc.delete(sc)
+            except:
+                pass
 
-            mc.select(clear=True)
+        mc.select(clear=True)
 
-        except:
-            traceback.print_exc()
-            om.MGlobal.displayError("Error occurred. See script editor for details.")
-
-        mc.undoInfo(closeChunk=True)
 
         ## Close Window ##
         if mode == "bake":
@@ -300,9 +311,9 @@ class Baker(QtWidgets.QDialog):
 
 if __name__ == "__main__":
     try:
-        b.close()
-        b.deleteLater()
+        lb.close()
+        lb.deleteLater()
     except:
         pass
-    b = Baker()
-    b.show()
+    lb = LocBaker()
+    lb.show()

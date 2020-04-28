@@ -30,14 +30,14 @@
 
 
 """
-import overscan
-reload(overscan)
+import overScan
+reload(overScan)
 try:
     o.close()
     o.deleteLater()
 except:
     pass
-o = overscan.Overscan()
+o = overScan.OverScan()
 o.show()
 """
 
@@ -74,14 +74,14 @@ def openCloseChunk(func):
     return wrapper
 
 
-class Overscan(QtWidgets.QDialog):
+class OverScan(QtWidgets.QDialog):
     @classmethod
     def maya_main_window(cls):
         main_window_ptr = omui.MQtUtil.mainWindow()
         return shiboken.wrapInstance(long(main_window_ptr), QtWidgets.QWidget)
 
     def __init__(self):
-        super(Overscan, self).__init__(self.maya_main_window())
+        super(OverScan, self).__init__(self.maya_main_window())
 
         self.setWindowTitle("Overscan")
         self.setMinimumWidth(400)
@@ -165,7 +165,7 @@ class Overscan(QtWidgets.QDialog):
     def set_preset(self, width, height):
         self.org_width_lineedit.setText(width)
         self.org_height_lineedit.setText(height)
-        
+
     @openCloseChunk
     def compute_overscan(self):
         heroCameraShape = self.heroCameraLabel.text()
@@ -198,5 +198,5 @@ if __name__ == "__main__":
         o.deleteLater()
     except:
         pass
-    o = Overscan()
+    o = OverScan()
     o.show()
