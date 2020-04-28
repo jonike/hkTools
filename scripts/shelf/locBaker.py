@@ -281,8 +281,10 @@ class LocBaker(QtWidgets.QDialog):
 
         # Bake
         if self.start_frame_le.text() != self.end_frame_le.text(): # If Start & End Frame is not same, Bake.
+            mc.ogs(pause=True)
             mc.bakeResults(locList, simulation=True, attribute=["tx","ty","tz","rx","ry","rz","sx","sy","sz"], time=(self.start_frame_le.text(), self.end_frame_le.text()))
-
+            mc.ogs(pause=True)
+            
         # Delete Constraints
         for pc in pcList:
             try:

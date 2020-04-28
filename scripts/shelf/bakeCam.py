@@ -189,6 +189,8 @@ class BakeCam(QtWidgets.QDialog):
         self.create_layouts()
         self.create_connections()
 
+        self.loadSettings()
+
     def create_widgets(self):
         self.options_resetScale_cb = QtWidgets.QCheckBox("Reset Scale")
         self.options_resetScale_cb.setChecked(True)
@@ -224,6 +226,16 @@ class BakeCam(QtWidgets.QDialog):
         objectType = mc.objectType(selShape) # Get object type.
         return objectType
 
+    def saveSettings(self):
+        mc.optionVar(intValue=("bakeCam_options_resetScale_cb", self.options_resetScale_cb.isChecked()))
+        mc.optionVar(intValue=("bakeCam_options_smartSave_cb", self.options_smartSave_cb.isChecked()))
+
+    def loadSettings(self):
+        if mc.optionVar(exists="bakeCam_options_resetScale_cb"):
+            self.options_resetScale_cb.setChecked(True) if mc.optionVar(q="bakeCam_options_resetScale_cb") else self.options_resetScale_cb.setChecked(False)
+        if mc.optionVar(exists="bakeCam_options_smartSave_cb"):
+            self.options_smartSave_cb.setChecked(True) if mc.optionVar(q="bakeCam_options_smartSave_cb") else self.options_smartSave_cb.setChecked(False)
+
     @openCloseChunk
     def bake(self, method):
         """
@@ -242,11 +254,18 @@ class BakeCam(QtWidgets.QDialog):
             return
 
         if mc.listRelatives(sel, parent=True) == None: # Check if selected camera's parent is 'world'.
-            mc.warning("It is already a child of the parent, 'world'.")
+            mc.warning("Selected camera is already a child of the parent, 'world'.")
             return
 
         if self.options_smartSave_cb.isChecked():
-            if smartSave() == "Failed": return
+            # e.g. current scene: blasterWalk_v001.ma
+            # Save once...
+            # e.g. blasterWalk_v002.ma
+            if smartSave() == "Failed":
+                return
+            # Save twice...
+            # e.g. blasterWalk_v003.ma << It is safe to overwrite this file because you have "blasterWalk_v002.ma"!
+            smartSave()
 
         selCamTrans = sel[0]
         selCamShape = mc.listRelatives(selCamTrans, shapes=True, fullPath=True)[0]
@@ -292,6 +311,8 @@ class BakeCam(QtWidgets.QDialog):
         self.close()
         self.deleteLater()
 
+        # Save checkbox toggle state
+        self.saveSettings()
 
 
 if __name__ == "__main__":

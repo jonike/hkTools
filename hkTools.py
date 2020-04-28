@@ -22,32 +22,17 @@ def _onMayaDropped():
         main()
 
 
-def getRunTimeCommandNamePathLang():
-    runTimeCommandDir = getRunTimeCommandDir()
-    dirItemList = os.listdir(runTimeCommandDir)
+def getNamePathLang(dir):
+    dirItemList = os.listdir(dir)
 
-    runTimeCommandNamePathLang = []
+    namePathLang = []
     for dirItem in dirItemList:
         if dirItem.endswith(".py"):
-            runTimeCommandNamePathLang.append([dirItem.split(".")[0], os.path.join(runTimeCommandDir, dirItem), "python"])
+            namePathLang.append([dirItem.split(".")[0], os.path.join(dir, dirItem), "python"])
         if dirItem.endswith(".mel"):
-            runTimeCommandNamePathLang.append([dirItem.split(".")[0], os.path.join(runTimeCommandDir, dirItem), "mel"])
+            namePathLang.append([dirItem.split(".")[0], os.path.join(dir, dirItem), "mel"])
 
-    return runTimeCommandNamePathLang
-
-
-def getShelfNamePathLang():
-    shelfDir = getShelfDir()
-    dirItemList = os.listdir(shelfDir)
-
-    shelfNamePathLang = []
-    for dirItem in dirItemList:
-        if dirItem.endswith(".py"):
-            shelfNamePathLang.append([dirItem.split(".")[0], os.path.join(shelfDir, dirItem), "python"])
-        if dirItem.endswith(".mel"):
-            shelfNamePathLang.append([dirItem.split(".")[0], os.path.join(shelfDir, dirItem), "mel"])
-
-    return shelfNamePathLang
+    return namePathLang
 
 
 def getCommand(scriptPath):
@@ -69,7 +54,7 @@ def getShelfDir():
 
 
 def createUpdateRunTimeCommand():
-    runTimeCommandNamePathLangs = getRunTimeCommandNamePathLang()
+    runTimeCommandNamePathLangs = getNamePathLang(getRunTimeCommandDir())
     updatedMsg = "\nUpdated...\n\n"
     createdMsg = "\nCreated...\n\n"
     for runTimeCommandNamePathLang in runTimeCommandNamePathLangs:
@@ -160,7 +145,7 @@ class _shelf():
 
 class customShelf(_shelf):
     def build(self):
-        self.shelfNamePathLangs = getShelfNamePathLang()
+        self.shelfNamePathLangs = getNamePathLang(getShelfDir())
         for shelfNamePathLang in self.shelfNamePathLangs:
             name, path, commandLanguage = shelfNamePathLang
             labelName = labelfy(name).upper()
