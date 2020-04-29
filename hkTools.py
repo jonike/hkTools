@@ -110,12 +110,12 @@ class _shelf():
         elements. Otherwise, nothing is added to the shelf.'''
         pass
 
-    def addButon(self, label, icon="commandButton.png", command=_null, doubleCommand=_null, sourceType=_null):
+    def addButon(self, label, icon="commandButton.png", command=_null, doubleCommand=_null, sourceType=_null, olb=(0, 0, 0, 1) ,olc=(.9, .9, .9)):
         '''Adds a shelf button with the specified label, command, double click command and image.'''
         cmds.setParent(self.name)
         if icon:
             icon = self.iconPath + icon
-        cmds.shelfButton(image=icon, l=label, command=command, dcc=doubleCommand, imageOverlayLabel=label, olb=self.labelBackground, olc=self.labelColour, stp=sourceType, noDefaultPopup=True)
+        cmds.shelfButton(image=icon, l=label, command=command, dcc=doubleCommand, imageOverlayLabel=label, olb=olb, olc=olc, stp=sourceType, noDefaultPopup=True)
 
     def addSeparator(self):
         cmds.separator(enable=True, width=24, height=31, manage=True, visible=True, style="shelf", horizontal=False)
@@ -149,8 +149,10 @@ class customShelf(_shelf):
         for shelfNamePathLang in self.shelfNamePathLangs:
             name, path, commandLanguage = shelfNamePathLang
             labelName = labelfy(name).upper()
-            self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path))
-
+            if self.shelfNamePathLangs.index(shelfNamePathLang) % 2 == 0:
+                self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path), olb=(0, 0, 0, 1), olc=(.9, .9, .9))
+            else:
+                self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path), olb=(.9, .9, .9, 1), olc=(0, 0, 0))
         # Add shelf buttons manually from this point...
 
         self.addSeparator() # Add separator

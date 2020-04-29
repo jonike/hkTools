@@ -6,6 +6,7 @@ global proc install() {
     python("import sys");
     python("sys.path.append('" + $sourceLocation + "')");
     python("import hkTools");
+    python("reload(hkTools)");
     python("hkTools._onMayaDropped()");
 }
 

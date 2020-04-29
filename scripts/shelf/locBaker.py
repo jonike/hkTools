@@ -266,16 +266,16 @@ class LocBaker(QtWidgets.QDialog):
                 pcList.append(pc)
             if self.orient_groupbox.isChecked():
                 oskip = ""
-                if self.orient_x_cb.isChecked() == False: skip += ", skip='x'"
-                if self.orient_y_cb.isChecked() == False: skip += ", skip='y'"
-                if self.orient_z_cb.isChecked() == False: skip += ", skip='z'"
+                if self.orient_x_cb.isChecked() == False: oskip += ", skip='x'"
+                if self.orient_y_cb.isChecked() == False: oskip += ", skip='y'"
+                if self.orient_z_cb.isChecked() == False: oskip += ", skip='z'"
                 exec("oc = mc.orientConstraint(trans, loc, maintainOffset=False {0})".format(oskip))
                 ocList.append(oc)
             if self.scale_groupbox.isChecked():
                 sskip = ""
-                if self.scale_x_cb.isChecked() == False: skip += ", skip='x'"
-                if self.scale_y_cb.isChecked() == False: skip += ", skip='y'"
-                if self.scale_z_cb.isChecked() == False: skip += ", skip='z'"
+                if self.scale_x_cb.isChecked() == False: sskip += ", skip='x'"
+                if self.scale_y_cb.isChecked() == False: sskip += ", skip='y'"
+                if self.scale_z_cb.isChecked() == False: sskip += ", skip='z'"
                 exec("sc = mc.scaleConstraint(trans, loc, maintainOffset=False {0})".format(sskip))
                 scList.append(sc)
 
@@ -284,7 +284,7 @@ class LocBaker(QtWidgets.QDialog):
             mc.ogs(pause=True)
             mc.bakeResults(locList, simulation=True, attribute=["tx","ty","tz","rx","ry","rz","sx","sy","sz"], time=(self.start_frame_le.text(), self.end_frame_le.text()))
             mc.ogs(pause=True)
-            
+
         # Delete Constraints
         for pc in pcList:
             try:
