@@ -41,15 +41,18 @@ def getCommand(scriptPath):
     return data
 
 
-def getRunTimeCommandDir():
+def getCurrentDir():
     currentDir = os.path.dirname(__file__)
-    runTimeCommandDir = os.path.join(currentDir, "scripts", "runTimeCommand")
+    return currentDir
+
+
+def getRunTimeCommandDir():
+    runTimeCommandDir = os.path.join(getCurrentDir(), "scripts", "runTimeCommand")
     return runTimeCommandDir
 
 
 def getShelfDir():
-    currentDir = os.path.dirname(__file__)
-    shelfDir = os.path.join(currentDir, "scripts", "shelf")
+    shelfDir = os.path.join(getCurrentDir(), "scripts", "shelf")
     return shelfDir
 
 
@@ -65,6 +68,7 @@ def createUpdateRunTimeCommand():
             updatedMsg += "'{}' runtime command\n".format(name)
         else:
             cmds.runTimeCommand(name, category="Custom Scripts", commandLanguage=commandLanguage, command=getCommand(path))
+            cmds.nameCommand(name+"NameCommand", annotation=name+"NameCommand", sourceType="mel", command=name)
             createdMsg += "'{}' runtime command.\n".format(name)
 
     cmds.confirmDialog(title="Run Time Command Results",message="{0}\n-----------------------\n{1}".format(updatedMsg, createdMsg))
@@ -98,7 +102,7 @@ class _shelf():
 
         self.iconPath = iconPath
 
-        self.labelBackground = (0, 0, 0, 1)
+        self.labelBackground = (.1, .1, .1, 1)
         self.labelColour = (.9, .9, .9)
 
         self._cleanOldShelf()
@@ -110,7 +114,7 @@ class _shelf():
         elements. Otherwise, nothing is added to the shelf.'''
         pass
 
-    def addButon(self, label, icon="commandButton.png", command=_null, doubleCommand=_null, sourceType=_null, olb=(0, 0, 0, 1) ,olc=(.9, .9, .9)):
+    def addButon(self, label, icon="commandButton.png", command=_null, doubleCommand=_null, sourceType=_null, olb=(.1, .1, .1, 1) ,olc=(.9, .9, .9)):
         '''Adds a shelf button with the specified label, command, double click command and image.'''
         cmds.setParent(self.name)
         if icon:
@@ -150,9 +154,10 @@ class customShelf(_shelf):
             name, path, commandLanguage = shelfNamePathLang
             labelName = labelfy(name).upper()
             if self.shelfNamePathLangs.index(shelfNamePathLang) % 2 == 0:
-                self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path), olb=(0, 0, 0, 1), olc=(.9, .9, .9))
+                self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path), olb=(.1, .1, .1, 1), olc=(.9, .9, .9))
             else:
-                self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path), olb=(.9, .9, .9, 1), olc=(0, 0, 0))
+                self.addButon(label=labelName, sourceType=commandLanguage, command=getCommand(path), olb=(.9, .9, .9, 1), olc=(.1, .1, .1))
+
         # Add shelf buttons manually from this point...
 
         self.addSeparator() # Add separator
@@ -174,9 +179,22 @@ class customShelf(_shelf):
 
 def createUpdateShelf():
     customShelf()
-    return
+
+
+def createUpdateHotkey():
+    # Returns all available hotkey sets in Maya
+    hotkeySetList = cmds.hotkeySet( q=True, hotkeySetArray=True )
+
+    # Delete old hkTools hotkey set
+    if "hkTools" in hotkeySetList:
+        cmds.hotkeySet( "hkTools", edit=True, delete=True )
+
+    # Import hkTools hotkey set
+    hkTools_mhk_filepath = os.path.join(getCurrentDir(), "hkTools.mhk")
+    cmds.hotkeySet( e=True, ip=hkTools_mhk_filepath )
 
 
 def main():
     createUpdateRunTimeCommand()
     createUpdateShelf()
+    createUpdateHotkey()

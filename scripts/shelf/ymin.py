@@ -11,9 +11,9 @@ def movePivotToYmin(sel):
     mc.move(xpiv, ypiv, zpiv, sel+".scalePivot", sel+".rotatePivot", worldSpace=True)
 
 def main():
-    sel = mc.ls(selection=True)
+    selList = mc.ls(selection=True)
     for sel in selList:
-        setPivot(sel)
+        movePivotToYmin(sel)
 
 
 if __name__ == "__main__":

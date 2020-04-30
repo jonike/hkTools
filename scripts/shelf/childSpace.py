@@ -57,6 +57,7 @@ class ChildSpace(QtWidgets.QDialog):
         self.setWindowFlags(self.windowFlags() ^ QtCore.Qt.WindowContextHelpButtonHint)
 
         self.create_icons()
+        self.create_fonts()
 
         self.create_widgets()
         self.create_layouts()
@@ -66,37 +67,45 @@ class ChildSpace(QtWidgets.QDialog):
         self.add_icon = QtGui.QIcon(":addCreateGeneric.png")
         self.delete_icon = QtGui.QIcon(":deleteGeneric.png")
 
+    def create_fonts(self):
+        self.big_font = QtGui.QFont()
+        self.big_font.setPointSize(10)
+        self.big_font.setBold(True)
+
     def create_widgets(self):
         self.camera_lb = QtWidgets.QLabel()
         self.camera_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.camera_lb.setStyleSheet("QLabel {background-color: #252525;}")
         self.camera_get_btn = QtWidgets.QPushButton("GET")
+        self.camera_get_btn.setMaximumWidth(40)
+        self.camera_get_btn.setStyleSheet("QPushButton {background-color: #EC5f67;}")
 
         self.objectPointGroupList_lw = QtWidgets.QListWidget()
-        self.objectPointGroupList_add_btn = QtWidgets.QPushButton()
-        self.objectPointGroupList_add_btn.setStyleSheet("QPushButton {background-color: #99C794;}")
-        self.objectPointGroupList_add_btn.setIcon(self.add_icon)
-        self.objectPointGroupList_remove_btn = QtWidgets.QPushButton()
+        self.objectPointGroupList_lw.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.objectPointGroupList_add_btn = QtWidgets.QPushButton("ADD")
+        self.objectPointGroupList_add_btn.setStyleSheet("QPushButton {background-color: #EC5f67;}")
+        self.objectPointGroupList_remove_btn = QtWidgets.QPushButton("REMOVE")
         self.objectPointGroupList_remove_btn.setStyleSheet("QPushButton {background-color: #EC5f67;}")
-        self.objectPointGroupList_remove_btn.setIcon(self.delete_icon)
 
-        self.childSpace_btn = QtWidgets.QPushButton("RUN")
+        self.childSpace_btn = QtWidgets.QPushButton("CHILD SPACE")
+        self.childSpace_btn.setFont(self.big_font)
+        self.childSpace_btn.setStyleSheet("QPushButton {background-color: #EC5f67;}")
 
     def create_layouts(self):
-        camera_groupbox = QtWidgets.QGroupBox("1. Get Camera")
+        camera_groupbox = QtWidgets.QGroupBox("Step 1. Get Camera")
         camera_layout = QtWidgets.QGridLayout()
-        camera_layout.addWidget(self.camera_lb, 0, 0, 1, 2)
+        camera_layout.addWidget(self.camera_lb, 0, 1)
         camera_layout.addWidget(self.camera_get_btn, 0, 2)
         camera_groupbox.setLayout(camera_layout)
 
-        objectPointGroupList_groupbox = QtWidgets.QGroupBox("2. Get Object Point Group List")
+        objectPointGroupList_groupbox = QtWidgets.QGroupBox("Step 2. Get Object Point Group List")
         objectPointGroupList_layout = QtWidgets.QGridLayout()
         objectPointGroupList_layout.addWidget(self.objectPointGroupList_lw, 0, 0, 1, 2)
         objectPointGroupList_layout.addWidget(self.objectPointGroupList_add_btn, 1, 0)
         objectPointGroupList_layout.addWidget(self.objectPointGroupList_remove_btn, 1, 1)
         objectPointGroupList_groupbox.setLayout(objectPointGroupList_layout)
 
-        childSpace_groupbox = QtWidgets.QGroupBox("3. Switch to Child space")
+        childSpace_groupbox = QtWidgets.QGroupBox("Step 3. Run")
         childSpace_layout = QtWidgets.QGridLayout()
         childSpace_layout.addWidget(self.childSpace_btn, 0, 0)
         childSpace_groupbox.setLayout(childSpace_layout)
@@ -107,20 +116,14 @@ class ChildSpace(QtWidgets.QDialog):
         main_layout.addWidget(childSpace_groupbox)
 
     def create_connections(self):
-        self.objectPointGroupList_add_btn.clicked.connect(lambda: self.addItem(self.objectPointGroupList_lw, self.getPointGroup()))
+        self.objectPointGroupList_add_btn.clicked.connect(lambda: self.addItemsFromList(self.objectPointGroupList_lw, self.getSelections()))
         self.objectPointGroupList_remove_btn.clicked.connect(lambda: self.removeCurrentItem(self.objectPointGroupList_lw))
         self.camera_get_btn.clicked.connect(self.setCameraLabel)
         self.childSpace_btn.clicked.connect(self.childSpace)
 
-    def getPointGroup(self):
+    def getSelections(self):
         sel = mc.ls(selection=True, long=True)
-
-        if len(sel) != 1: # Check if only one object is selected.
-            mc.warning("Add one item at a time.")
-            return
-
-        pointGroup = sel[0]
-        return pointGroup
+        return sel
 
     def getItems(self, listWidget):
         items = [listWidget.item(index).text() for index in xrange(listWidget.count())]
@@ -134,12 +137,13 @@ class ChildSpace(QtWidgets.QDialog):
 
         return False
 
-    def addItem(self, listWidget, itemName):
-        if self.checkDuplicate(listWidget, itemName):
-            mc.warning("Already in list.")
-            return
-        item = itemName
-        listWidget.addItem(item)
+    def addItemsFromList(self, listWidget, itemList):
+        for item in itemList:
+            if self.checkDuplicate(listWidget, item):
+                mc.warning("{0} is already in list.".format(item))
+                continue
+            else:
+                listWidget.addItem(item)
 
     def removeCurrentItem(self, listWidget):
         removeItemRow = listWidget.currentRow()
@@ -167,12 +171,12 @@ class ChildSpace(QtWidgets.QDialog):
     def childSpace(self):
         camera = self.camera_lb.text()
         if camera == "":
-            mc.warning("1. Get Camera")
+            mc.warning("'Step 1. Get Camera' is empty.")
             return
 
         objectPointGroupList = self.getItems(self.objectPointGroupList_lw)
         if objectPointGroupList == []:
-            mc.warning("2. Get Object Point Group List")
+            mc.warning("'Step 2. Get Object Point Group List' is empty")
             return
 
         for objectPointGroup in objectPointGroupList:

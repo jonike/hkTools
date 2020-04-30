@@ -1,0 +1,22 @@
+//hkTools
+
+//
+// The user hotkeys
+//
+//
+// The hotkey set
+//
+hotkeySet -source "Maya_Default" -current hkTools;
+//
+// The hotkey contexts and hotkeys
+//
+hotkey -keyShortcut "`" -name ("toggleHoldoutNameCommand");
+hotkey -keyShortcut "q" -alt -sht -name ("cycleThroughVisibleCamerasBackwardNameCommand");
+hotkey -keyShortcut "s" -alt -sht -name ("smartSaveNameCommand");
+hotkey -keyShortcut "w" -alt -sht -name ("toggleShowWireframeOnShadedNameCommand");
+hotkey -keyShortcut "c" -alt -sht -name ("center3dNameCommand");
+hotkey -keyShortcut ";" -name ("toggleShowPolymeshesNameCommand");
+hotkey -keyShortcut "r" -alt -sht -name ("resetPanZoomNameCommand");
+hotkey -keyShortcut "x" -alt -sht -name ("tlocNameCommand");
+hotkey -keyShortcut "e" -alt -sht -name ("cycleThroughVisibleCamerasForwardNameCommand");
+hotkey -keyShortcut "2" -alt -name ("toggleDockedGraphEditorNameCommand");
