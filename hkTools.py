@@ -58,6 +58,7 @@ def getShelfDir():
 
 def createUpdateRunTimeCommand():
     runTimeCommandNamePathLangs = getNamePathLang(getRunTimeCommandDir())
+    runTimeCommandNamePathLangs.sort()
     updatedMsg = "\nUpdated...\n\n"
     createdMsg = "\nCreated...\n\n"
     for runTimeCommandNamePathLang in runTimeCommandNamePathLangs:
@@ -150,6 +151,7 @@ class _shelf():
 class customShelf(_shelf):
     def build(self):
         self.shelfNamePathLangs = getNamePathLang(getShelfDir())
+        self.shelfNamePathLangs.sort()
         for shelfNamePathLang in self.shelfNamePathLangs:
             name, path, commandLanguage = shelfNamePathLang
             labelName = labelfy(name).upper()
