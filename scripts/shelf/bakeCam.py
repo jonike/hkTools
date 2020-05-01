@@ -45,133 +45,6 @@ def openCloseChunk(func):
 
     return wrapper
 
-""" Smart Save """
-DEFAULT_PADDING = 3
-
-def paddingExistsInBasename(baseName):
-    result = re.search(r"_v\d*.", baseName)
-    if result == None:
-        return False
-    return True
-
-def paddingExistsInFiles(matchList):
-    matchListString = " ".join(matchList)
-
-    result = re.search(r"_v\d*.", matchListString)
-    if result == None:
-        return False
-    return True
-
-def getPadding( matchList):
-    pattern = re.compile(r"_v\d*.")
-    for match in matchList:
-        version = pattern.findall(match)
-        versionStripped = version[0][2:-1]
-        padding = len(versionStripped)
-    return padding
-
-def newSceneVersion(currentScenePath):
-    currentSceneDir, currentSceneFile = os.path.split(currentScenePath)
-    currentSceneBasename, currentSceneExt = os.path.splitext(currentSceneFile)
-
-    fileList = os.listdir(currentSceneDir)
-    fileListString = " ".join(fileList)
-
-    # If current scene name has no "_v#"
-    # e.g. currentSceneFile >> "blasterWalk.ma"
-    # e.g. currentSceneBasename >> "blasterWalk"
-    if not paddingExistsInBasename(currentSceneBasename):
-
-        # We have to check the extention because files might have same basename but different extention(e.g. ".ma", ".mb")
-        pattern = re.compile(r"{baseName}_v\d*{ext}".format(baseName=currentSceneBasename, ext=currentSceneExt))
-        matchList = pattern.findall(fileListString)
-
-        padding = getPadding(matchList) if paddingExistsInFiles(matchList) else DEFAULT_PADDING
-
-        # Get list of all "blasterWalk_v#.ma" in same directory.
-        # The current scene does not have "_v#",
-        # but there might be a file in the same directory that already follows the naming convention "blasterWalk_v###.ma"
-        versionList = []
-        for match in matchList:
-            try:
-                versionPattern = re.compile(r"_v\d{{{padding}}}.".format(padding=padding))
-                version = int(versionPattern.findall(match)[0][2:padding+2])
-                versionList.append(version)
-            except:
-                pass
-
-        # If there is no file that follows the naming convention "blasterWalk_v#.ma", save v001.
-        # e.g. blasterWalk_v001.ma
-        if len(versionList) == 0:
-            newSceneVersionFile = "{baseName}_v{nextVer:0{padding}d}{ext}".format(baseName=currentSceneBasename, nextVer=1, padding=padding, ext=currentSceneExt)
-            newSceneVersionPath = os.path.join(currentSceneDir, newSceneVersionFile)
-            return newSceneVersionPath
-
-        # If there is a file that follows the naming convention "blasterWalk_v#.ma", find the next available version and save.
-        # e.g. Files with same naming convention in directory: [blasterWalk_v001.ma, blasterWalk_v002.ma] >> Result: blasterWalk_v003.ma
-        # e.g. Files with same naming convention in directory: [blasterWalk_v0001.ma, blasterWalk_v0002.ma] >> Result: blasterWalk_v0003.ma
-        # e.g. Files with same naming convention in directory: [blasterWalk_v001.ma, blasterWalk_v003.ma] >> Result: blasterWalk_v004.ma | Skips "blasterWalk_v002.ma"
-        # e.g. Files with same naming convention in directory: [blasterWalk_v0001.ma, blasterWalk_v0003.ma] >> Result: blasterWalk_v0004.ma | Skips "blasterWalk_v002.ma"
-        maxVersion = max(versionList)
-        nextVersion = maxVersion + 1
-
-        newSceneVersionFile = "{baseName}_v{nextVer:0{padding}d}{ext}".format(baseName=currentSceneBasename, nextVer=nextVersion, padding=padding, ext=currentSceneExt)
-        newSceneVersionPath = os.path.join(currentSceneDir, newSceneVersionFile)
-        return newSceneVersionPath
-
-    # If current scene name has "_v#"
-    # e.g. currentSceneFile >> "blasterWalk_v001.ma"
-    # e.g. currentSceneBasename >> "blasterWalk_v001"
-    # Get list of all "blasterWalk_v#.ma" in same directory.
-
-    # Remove "_v#" from basename
-    currentSceneBasenameVersionStripped = re.sub(r"_v\d*", "", currentSceneBasename)
-
-    # We have to check the extention because files might have same basename but different extention(e.g. ".ma", ".mb")
-    pattern = re.compile(r"{baseName}_v\d*{ext}".format(baseName=currentSceneBasenameVersionStripped, ext=currentSceneExt))
-    matchList = pattern.findall(fileListString)
-
-    padding = getPadding(matchList)
-
-    versionList = []
-    for match in matchList:
-        try:
-            versionPattern = re.compile(r"_v\d{{{padding}}}.".format(padding=padding))
-            version = int(versionPattern.findall(match)[0][2:padding+2])
-            versionList.append(version)
-        except:
-            pass
-
-    # If there is a file that follows the naming convention "blasterWalk_v###.ma", find the next available version and save.
-    # e.g. Files with same naming convention in directory: [blasterWalk_v001.ma, blasterWalk_v002.ma] >> Result: blasterWalk_v003.ma
-    # e.g. Files with same naming convention in directory: [blasterWalk_v001.ma, blasterWalk_v003.ma] >> Result: blasterWalk_v004.ma | Skips "blasterWalk_v002.ma"
-    maxVersion = max(versionList)
-    nextVersion = maxVersion + 1
-
-    newSceneVersionFile = "{baseName}_v{nextVer:0{padding}d}{ext}".format(baseName=currentSceneBasenameVersionStripped, nextVer=nextVersion, padding=padding, ext=currentSceneExt)
-    newSceneVersionPath = os.path.join(currentSceneDir, newSceneVersionFile)
-    return newSceneVersionPath
-
-def smartSave():
-    currentScenePath = mc.file(q=1, sn=1)
-    if currentScenePath == "":
-        mc.warning("You must save a scene first.")
-        return "Failed"
-
-    currentSceneDir, currentSceneFile = os.path.split(currentScenePath)
-    currentSceneBasename, currentSceneExt = os.path.splitext(currentSceneFile)
-
-    newSceneVersionPath = newSceneVersion(currentScenePath)
-
-    if currentSceneExt == ".ma": fileType = "mayaAscii"
-    if currentSceneExt == ".mb": fileType = "mayaBinary"
-
-    # Rename and Save
-    mc.file(rename=newSceneVersionPath)
-    mc.file(save=True, type=fileType)
-
-""" Smart Save """
-
 
 class BakeCam(QtWidgets.QDialog):
     @classmethod
@@ -194,23 +67,19 @@ class BakeCam(QtWidgets.QDialog):
     def create_widgets(self):
         self.options_resetScale_cb = QtWidgets.QCheckBox("Reset Scale")
         self.options_resetScale_cb.setChecked(True)
-        self.options_smartSave_cb = QtWidgets.QCheckBox("Smart Save")
-        self.options_smartSave_cb.setChecked(True)
 
-        self.bake_duplicate_btn = QtWidgets.QPushButton("\nDuplicate\n")
-        self.bake_reparentToWorld_btn = QtWidgets.QPushButton("Reparent\nto\nWorld")
+        self.bake_reparentToWorld_btn = QtWidgets.QPushButton("BAKE CAMERA")
+        self.bake_reparentToWorld_btn.setStyleSheet("QPushButton {background-color: #EC5f67;}")
 
     def create_layouts(self):
         options_groupbox = QtWidgets.QGroupBox("Options")
         options_layout = QtWidgets.QGridLayout()
         options_layout.addWidget(self.options_resetScale_cb, 0, 0)
-        options_layout.addWidget(self.options_smartSave_cb, 0, 1)
         options_groupbox.setLayout(options_layout)
 
-        bake_groupbox = QtWidgets.QGroupBox("Method")
+        bake_groupbox = QtWidgets.QGroupBox()
         bake_layout = QtWidgets.QGridLayout()
-        bake_layout.addWidget(self.bake_duplicate_btn, 0, 0)
-        bake_layout.addWidget(self.bake_reparentToWorld_btn, 0, 1)
+        bake_layout.addWidget(self.bake_reparentToWorld_btn, 0, 0)
         bake_groupbox.setLayout(bake_layout)
 
         main_layout = QtWidgets.QVBoxLayout(self)
@@ -228,13 +97,10 @@ class BakeCam(QtWidgets.QDialog):
 
     def saveSettings(self):
         mc.optionVar(intValue=("bakeCam_options_resetScale_cb", self.options_resetScale_cb.isChecked()))
-        mc.optionVar(intValue=("bakeCam_options_smartSave_cb", self.options_smartSave_cb.isChecked()))
 
     def loadSettings(self):
         if mc.optionVar(exists="bakeCam_options_resetScale_cb"):
             self.options_resetScale_cb.setChecked(True) if mc.optionVar(q="bakeCam_options_resetScale_cb") else self.options_resetScale_cb.setChecked(False)
-        if mc.optionVar(exists="bakeCam_options_smartSave_cb"):
-            self.options_smartSave_cb.setChecked(True) if mc.optionVar(q="bakeCam_options_smartSave_cb") else self.options_smartSave_cb.setChecked(False)
 
     @openCloseChunk
     def bake(self, method):
@@ -257,15 +123,6 @@ class BakeCam(QtWidgets.QDialog):
             mc.warning("Selected camera is already a child of the parent, 'world'.")
             return
 
-        if self.options_smartSave_cb.isChecked():
-            # e.g. current scene: blasterWalk_v001.ma
-            # Save once...
-            # e.g. blasterWalk_v002.ma
-            if smartSave() == "Failed":
-                return
-            # Save twice...
-            # e.g. blasterWalk_v003.ma << It is safe to overwrite this file because you have "blasterWalk_v002.ma"!
-            smartSave()
 
         selCamTrans = sel[0]
         selCamShape = mc.listRelatives(selCamTrans, shapes=True, fullPath=True)[0]
@@ -273,9 +130,9 @@ class BakeCam(QtWidgets.QDialog):
         minTime = mc.playbackOptions(q=True, minTime=True)
         maxTime = mc.playbackOptions(q=True, maxTime=True)
 
-        if method == "duplicate":
-            dupCamTrans, dupCamShape = mc.camera(name=selCamTrans)
-            print "WIP"
+        #if method == "duplicate":
+        #    dupCamTrans, dupCamShape = mc.camera(name=selCamTrans)
+        #    print "WIP"
 
         if method == "reparentToWorld":
             worldLoc = mc.spaceLocator(name="worldLoc")[0]
