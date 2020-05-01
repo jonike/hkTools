@@ -2,10 +2,16 @@
 
 ## What does it do
 - Tools for matchmove, layout and animation related tasks in Autodesk Maya.
-- **Dead-Simple Installation**. Just drag and drop the `install.mel` file onto the Maya viewport.
+
+## Installation
+1. Download and unzip the `hkTools-#.#.#.zip` file from [GitHub releases](https://github.com/kohyuk91/hkTools/releases).
+    > ![doc/download_release.png](doc/download_release.png)<br>
+1. **Dead-Simple Installation**. Just drag and drop the `install.mel` file onto the Maya viewport. That's it!
     > ![doc/install.gif](doc/install.gif)<br>
 - Creates **Run Time Commands** that you can assign hotkeys to.
     > ![doc/hotkeyEditor_runTimeCommand.gif](doc/hotkeyEditor_runTimeCommand.gif)<br>
+    1. Edit Hotkeys For: `Custom Scripts`
+    1. Assign a Hotkey for each command
 - Creates **hkTools** Shelf.
     > ![doc/hkToolsShelf.png](doc/hkToolsShelf.png)<br>
 
@@ -121,12 +127,3 @@
 1. Toggle Pivot
     - [scripts/runTimeCommand/toggleDisplayRotatePivot.py](scripts/runTimeCommand/toggleDisplayRotatePivot.py)
         - Default Default Hotkey: *   
-
-## Installation
-1. Download and unzip the mayaMatchmoveTools.zip file from [GitHub releases](https://github.com/kohyuk91/hkTools/releases).
-1. Drag and drop the `drag_and_drop_install.mel` file onto the Maya viewport.
-    > ![doc/install.gif](doc/install.gif)<br>
-1. Open `Hotkey Editor`
-    > ![doc/hotkeyEditor_runTimeCommand.gif](doc/hotkeyEditor_runTimeCommand.gif)<br>
-    1. Edit Hotkeys For: `Custom Scripts`
-    1. Assign a Hotkey for each command
